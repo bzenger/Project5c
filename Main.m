@@ -93,6 +93,7 @@ targetSize = [28,28];
 for ii=1:endingLabelValue
     threshold_image = CCImage ==ii;
     [x,y]=find(CCImage==ii);
+<<<<<<< HEAD
     if ~(x==[])        
         EDGE_BIAS = 20;
         Lboundx = min(x)-EDGE_BIAS;
@@ -135,6 +136,42 @@ for ii=1:endingLabelValue
         print(['OutputImages/HandWrittenImage' number],'-depsc');
         temp_var_im = 'temp_image';
         images{ii} = temp_image;
+=======
+    EDGE_BIAS = 20;
+    Lboundx = min(x)-EDGE_BIAS;
+    if Lboundx <=0
+        Lboundx =1;
+    end
+    Lboundy = min(y)-EDGE_BIAS;
+    if Lboundy <=0
+        Lboundy =1;
+    end
+    Hboundx = max(x)+EDGE_BIAS;
+    if Hboundx > size(CCImage,1)
+        Hboundx = size(CCImage,1);
+    end
+    Hboundy = max(y)+EDGE_BIAS;
+    if Hboundy > size(CCImage,2)
+        Hboundy = size(CCImage,2);
+    end
+    temp_var = strcat( 'image_',num2str(ii));
+    temp_image = double(threshold_image(Lboundx:Hboundx,Lboundy:Hboundy));
+    sourceSize = size(temp_image);
+    [X_samples,Y_samples] = meshgrid(linspace(1,sourceSize(2),targetSize(2)), linspace(1,sourceSize(1),targetSize(1)));
+    temp_image = interp2(temp_image, X_samples, Y_samples);
+    temp_image = temp_image > 0.75;
+    temp_image = 255*single(temp_image)-imdbNum.images.data_mean;
+    res = vl_simplenn(net,temp_image);
+    
+    %Classify Result
+    scores = squeeze(gather(res(end).x));
+    [bestScore, best] = max(scores);
+    best = best-1;
+    if best ==1
+        numberName = 'odd';
+    else
+        numberName = 'even';
+>>>>>>> 2da1081d3179c32bf3d93333421627f2e3dd52fd
     end
 end
 
