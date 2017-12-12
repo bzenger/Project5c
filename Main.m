@@ -26,7 +26,7 @@ print('OutputImages/Weights','-depsc');
 net.layers{end}.type = 'softmax';
 imdbNum = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/imdb.mat');
 
-for ii = 1,2,3 %image numbers to be tested. 
+for ii = [1,2,3] %image numbers to be tested. 
     testim = imdbNum.images.data(:,:,1,ii);
     testim = single(testim);
     testim = imresize(testim, net.meta.inputSize(1:2));
@@ -50,7 +50,7 @@ end
 
 %% Even odd net Manual Spot Test
 netEO.layers{end}.type = 'softmax';
-imdbEO = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/imdb.mat');
+imdbEO = load('matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/imdb.mat');
 
 for ii = [1,6,8]
     testim = imdbEO.images.data(:,:,1,ii);
