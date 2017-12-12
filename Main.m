@@ -7,9 +7,9 @@
 tempnet = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/net-epoch-20.mat')
 net = tempnet.net
 tempnet = load('matconvnet-1.0-beta25/catdog/net-epoch-80.mat')
-netEO = tempnet.net
-tempnet = load('matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/net-epoch-20.mat')
 netC = tempnet.net
+tempnet = load('matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/net-epoch-20.mat')
+netEO = tempnet.net
 %% Viewing the weights of the first layer
 %montage(net.layers{1}.weights{1})
 
@@ -29,7 +29,7 @@ imdbNum = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/imdb.mat');
 for ii = [1,2,3] %image numbers to be tested. 
     testim = imdbNum.images.data(:,:,1,ii);
     testim = single(testim);
-    testim = imresize(testim, net.meta.inputSize(1:2));
+    %testim = imresize(testim, net.meta.inputSize(1:2));
     
     %run it
     res = vl_simplenn(net,testim);
@@ -40,7 +40,7 @@ for ii = [1,2,3] %image numbers to be tested.
     class= net.meta.classes.name{best};
     numberName=class;
     number = num2str(ii);
-    figure(4); clf; imagesc(testim); axis image; colormap gray; drawnow;
+    figure(4); clf; imagesc(testim+imdbNum.images.data_mean); axis image; colormap gray; drawnow;
     title(sprintf('the number is %s, score is %.1f%%',numberName,bestScore*100))
     print(['OutputImages/MINST' number],'-depsc');
     
@@ -51,21 +51,23 @@ end
 %% Even odd net Manual Spot Test
 netEO.layers{end}.type = 'softmax';
 imdbEO = load('matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/imdb.mat');
-
+% Classes didnt save correctly, make sure they are correct here
+netEO.meta.classes.name={'Even', 'Odd'};
+    
 for ii = [1,6,8]
     testim = imdbEO.images.data(:,:,1,ii);
     testim = single(testim);
-    testim = imresize(testim, net.meta.inputSize(1:2));
+    %testim = imresize(testim, net.meta.inputSize(1:2));
     %run it
     res = vl_simplenn(netEO,testim);
     
     %Classify Result
     scores = squeeze(gather(res(end).x));
     [bestScore, best] = max(scores); % This is the correct index into the class names cell array on the line below (by itself this number is confusing)
-    class= netEO.meta.classes.name{best};
+    class= netEO.meta.classes.name{best}; % now index
     numberName=class;
     number = num2str(ii);
-    figure(3); clf; imagesc(testim); axis image; colormap gray; drawnow;
+    figure(3); clf; imagesc(testim+imdbEO.images.data_mean); axis image; colormap gray; drawnow;
     title(sprintf('the number is %s, score is %.1f%%',numberName,bestScore*100))
     print(['OutputImages/EvenOdd' number],'-depsc');
     
