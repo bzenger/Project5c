@@ -3,6 +3,8 @@
 % Bioen 6640 Image Processing
 
 %% run this during the matlab startup if networks already created
+vl_nnsetup;
+vl_nncompile;
 
 tempnet = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/net-epoch-20.mat')
 net = tempnet.net
