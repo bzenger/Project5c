@@ -152,7 +152,13 @@ end
 
 %% CIFAR dataset
 figure()
-catdog = load('matconvnet-1.0-beta25/data/cifar-lenet/imdb.mat');
+cifar = load('matconvnet-1.0-beta25/data/cifar-lenet/imdb.mat');
+catdog = struct();
+catdog.images.data = cifar.images.data(:,:,:,cifar.images.labels == 4 | cifar.images.labels == 6);
+catdog.images.labels = 1 + (cifar.images.labels(cifar.images.labels == 4 | cifar.images.labels == 6) == 6);
+catdog.images.set = ones(size(catdog.images.labels)); % Just use everything for training.  Not the best choice in the world
+catdog.meta.classes={'cat','dog'};
+
 for ii = [1,2,3]
     netC.layers{end}.type = 'softmax';
     testim = catdog.images.data(:,:,:,ii);
