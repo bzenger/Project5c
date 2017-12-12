@@ -44,8 +44,10 @@ imdb.images.labels=mod(imdb.images.labels,2); %0 is even, 1 is odd
 if ~exist(expDir, 'dir'), mkdir(expDir) ; end
 save('matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/imdb.mat','-struct','imdb','images','meta');
 figure(2)
-netEO = cnn_mnist('network',netEO,'expDir',expDir,'imdbPath','data/mnist-evenodd-simplenn/imdb.mat');
+netEO = cnn_mnist('network',netEO,'expDir',expDir,'imdbPath','matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/imdb.mat');
 netEO.meta.classes.name = {'Even','Odd'};
+
+
 %% CIFAR Dog/Cat Classifier Test
 % modify data
 cifar = load('matconvnet-1.0-beta25/data/cifar-lenet/imdb.mat');
