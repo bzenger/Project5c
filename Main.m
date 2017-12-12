@@ -79,7 +79,7 @@ end
 
 %% Preprocessing images to be fed into the system
 
-testImage = imread('InputImages/Handwritetest.png');
+testImage = imread('InputImages/HRTest.png');
 if size(testImage,3) == 3
     testImage = rgb2gray(testImage);
 end
@@ -115,7 +115,7 @@ for ii=1:endingLabelValue
     [X_samples,Y_samples] = meshgrid(linspace(1,sourceSize(2),targetSize(2)), linspace(1,sourceSize(1),targetSize(1)));
     temp_image = interp2(temp_image, X_samples, Y_samples);
     temp_image = temp_image > 0.75;
-    temp_image = 255*single(temp_image)-imdb.images.data_mean;
+    temp_image = 255*single(temp_image)-imdbNum.images.data_mean;
     res = vl_simplenn(net,temp_image);
     
     %Classify Result
