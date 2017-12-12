@@ -52,7 +52,7 @@ end
 netEO.layers{end}.type = 'softmax';
 imdbEO = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/imdb.mat');
 
-for ii = 1,6,8
+for ii = [1,6,8]
     testim = imdbEO.images.data(:,:,1,ii);
     testim = single(testim);
     testim = imresize(testim, net.meta.inputSize(1:2));
@@ -61,7 +61,7 @@ for ii = 1,6,8
     
     %Classify Result
     scores = squeeze(gather(res(end).x));
-    [bestScore, best] = max(scores); % This is screwy with the indexing 1 = even 2 = odd
+    [bestScore, best] = max(scores); % This is the correct index into the class names cell array on the line below (by itself this number is confusing)
     class= netEO.meta.classes.name{best};
     numberName=class;
     number = num2str(ii);
