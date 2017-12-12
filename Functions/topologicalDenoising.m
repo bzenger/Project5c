@@ -27,7 +27,7 @@ for ii=1:size(labelImage,1)
             [~,replacementLabel]=max(voteMatrix(labelImage(ii,jj),:));
             labelImage(ii,jj)= replacementLabel;
         end
-    ii    
+   % ii    
     end
 end
 

@@ -88,12 +88,12 @@ testImage = testImage/max(max(testImage));
 imageThresholded = testImage < 0.01;
 labelImage = ones(size(testImage,1),size(testImage,2));
 [CCImage, endingLabelValue] = connectedComponentBZ(imageThresholded,1,labelImage);
-CCImage= topologicalDenoising(endingLabelValue, CCImage, smallestSize)
+CCImage= topologicalDenoising(endingLabelValue, CCImage, smallestSize);
 targetSize = [28,28];
 for ii=1:endingLabelValue
     threshold_image = CCImage ==ii;
     [x,y]=find(CCImage==ii);
-    if ~(x==[]) % Can't figure out what to do here. 
+    if ~(isempty(x)) 
         EDGE_BIAS = 20;
         Lboundx = min(x)-EDGE_BIAS;
         if Lboundx <=0
@@ -117,7 +117,7 @@ for ii=1:endingLabelValue
         [X_samples,Y_samples] = meshgrid(linspace(1,sourceSize(2),targetSize(2)), linspace(1,sourceSize(1),targetSize(1)));
         temp_image = interp2(temp_image, X_samples, Y_samples);
         temp_image = temp_image > 0.75;
-        temp_image = 255*single(temp_image)-imdb.images.data_mean;
+        temp_image = 255*single(temp_image)-imdbNum.images.data_mean;
         res = vl_simplenn(net,temp_image);
         
         %Classify Result
