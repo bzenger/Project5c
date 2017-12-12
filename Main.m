@@ -11,27 +11,14 @@ netEO = tempnet.net
 tempnet = load('matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/net-epoch-20.mat')
 netC = tempnet.net
 %% Viewing the weights of the first layer
-montage(net.layers{1}.weights{1})
+%montage(net.layers{1}.weights{1})
 
 figure(1)
-subplot(3,2,1)
-imagesc(net.layers{1}.weights{:,:,1,1});axis image; colormap gray; drawnow;
-title('Node 1')
-subplot(3,2,2)
-imagesc(net.layers{1}.weights{:,:,1,2});axis image; colormap gray; drawnow;
-title('Node 2')
-subplot(3,2,3)
-imagesc(net.layers{1}.weights{:,:,1,2});axis image; colormap gray; drawnow;
-title('Node 3')
-subplot(3,2,4)
-imagesc(net.layers{1}.weights{:,:,1,2});axis image; colormap gray; drawnow;
-title('Node 4')
-subplot(3,2,5)
-imagesc(net.layers{1}.weights{:,:,1,2});axis image; colormap gray; drawnow;
-title('Node 5')
-subplot(3,2,6)
-imagesc(net.layers{1}.weights{:,:,1,2});axis image; colormap gray; drawnow;
-title('Node 6')
+for k = 1:20
+subplot(4,5,k)
+imagesc(net.layers{1}.weights{1}(:,:,1,k));axis image; colormap gray; 
+title(['Filter ' num2str(k)])
+end
 print('OutputImages/Weights','-depsc');
 % Finish this part??
 
