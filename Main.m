@@ -153,7 +153,7 @@ end
 %% CIFAR dataset
 figure()
 catdog = load('matconvnet-1.0-beta25/data/cifar-lenet/imdb.mat');
-for ii = 1,2,3
+for ii = [1,2,3]
     netC.layers{end}.type = 'softmax';
     testim = catdog.images.data(:,:,:,ii);
     testim = single(testim);
