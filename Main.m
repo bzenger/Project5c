@@ -4,11 +4,11 @@
 
 %% run this during the matlab startup if networks already created
 
-tempnet = load('/Users/Brian/Desktop/Project5/matconvnet-1.0-beta25/data/mnist-baseline-simplenn/net-epoch-20.mat')
+tempnet = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/net-epoch-20.mat')
 net = tempnet.net
-tempnet = load('/Users/Brian/Desktop/Project5/matconvnet-1.0-beta25/catdog/net-epoch-80.mat')
+tempnet = load('matconvnet-1.0-beta25/catdog/net-epoch-80.mat')
 netEO = tempnet.net
-tempnet = load('/Users/Brian/Desktop/Project5/matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/net-epoch-20.mat')
+tempnet = load('matconvnet-1.0-beta25/data/mnist-evenodd-simplenn/net-epoch-20.mat')
 netC = tempnet.net
 %% Viewing the weights of the first layer
 montage(net.layers{1}.weights{1})
