@@ -83,17 +83,17 @@ testImage = imread('InputImages/HRTest.png');
 if size(testImage,3) == 3
     testImage = rgb2gray(testImage);
 end
-smallestSize = 10;
+smallestSize = 20;
 testImage = testImage/max(max(testImage));
 imageThresholded = testImage < 0.01;
 labelImage = ones(size(testImage,1),size(testImage,2));
 [CCImage, endingLabelValue] = connectedComponentBZ(imageThresholded,1,labelImage);
-labelImage= topologicalDenoising(endingLabelValue, CCImage, smallestSize)
+CCImage= topologicalDenoising(endingLabelValue, CCImage, smallestSize)
 targetSize = [28,28];
 for ii=1:endingLabelValue
     threshold_image = CCImage ==ii;
     [x,y]=find(CCImage==ii);
-    if ~(x==[])
+    if ~(x==[]) % Can't figure out what to do here. 
         EDGE_BIAS = 20;
         Lboundx = min(x)-EDGE_BIAS;
         if Lboundx <=0
