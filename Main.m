@@ -25,6 +25,10 @@ print('OutputImages/Weights','-depsc');
 %% Number clasify net Manual Spot Test
 net.layers{end}.type = 'softmax';
 imdbNum = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/imdb.mat');
+% The labels in the provided data set are wrong, we classify 0-9, not 1-10
+% (ten is not a single digit number, the curator of this dataset needs to
+% check their work)
+net.meta.classes.name = arrayfun(@(x)sprintf('%d',x),0:9,'UniformOutput',false) ;
 
 for ii = [1,2,3] %image numbers to be tested. 
     testim = imdbNum.images.data(:,:,1,ii);
