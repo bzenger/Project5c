@@ -34,7 +34,7 @@ end
 netEO.meta.trainOpts.learningRate=1e-4;
 netEO.meta.classes.name = {'0','1'}; % Can change this to {'even','odd'} ???? - gets overwritten inside cnn_mnist anyway
 netEO = vl_simplenn_tidy(netEO);
-expDir = fullfile(vl_rootnn, 'matconvnet-1.0-beta25/data', ['mnist-evenodd-' 'simplenn']);
+expDir = fullfile(vl_rootnn, 'data', ['mnist-evenodd-' 'simplenn']);
 
 %load the image database, edit the labels to be even/odd, then save so it
 %can be loaded by the folloiwng function
