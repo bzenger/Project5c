@@ -3,8 +3,8 @@
 % Bioen 6640 Image Processing
 
 %% run this during the matlab startup if networks already created
-vl_nnsetup;
-vl_nncompile;
+vl_setupnn;
+vl_compilenn;
 
 tempnet = load('matconvnet-1.0-beta25/data/mnist-baseline-simplenn/net-epoch-20.mat')
 net = tempnet.net
@@ -22,7 +22,7 @@ imagesc(net.layers{1}.weights{1}(:,:,1,k));axis image; colormap gray;
 title(['Filter ' num2str(k)])
 end
 print('OutputImages/Weights','-depsc');
-% Finish this part??
+
 
 %% Number clasify net Manual Spot Test
 net.layers{end}.type = 'softmax';
@@ -96,7 +96,7 @@ for ii=1:endingLabelValue
     threshold_image = CCImage ==ii;
     [x,y]=find(CCImage==ii);
     if ~(isempty(x)) 
-        EDGE_BIAS = 20;
+        EDGE_BIAS = 65;
         Lboundx = min(x)-EDGE_BIAS;
         if Lboundx <=0
             Lboundx =1;
@@ -119,18 +119,16 @@ for ii=1:endingLabelValue
         [X_samples,Y_samples] = meshgrid(linspace(1,sourceSize(2),targetSize(2)), linspace(1,sourceSize(1),targetSize(1)));
         temp_image = interp2(temp_image, X_samples, Y_samples);
         temp_image = temp_image > 0.75;
-        temp_image = 255*single(temp_image)-imdbNum.images.data_mean;
+        se = offsetstrel('ball',3,3);
+        temp_image = conv2(temp_image,ones(3),'same') > 1;
+        temp_image = 255*single(temp_image);
+        temp_image = conv2(temp_image, [1,3,1;3,9,3;1,3,1]/25, 'same');
+        temp_image = temp_image -imdbNum.images.data_mean;
         res = vl_simplenn(net,temp_image);
         
         %Classify Result
         scores = squeeze(gather(res(end).x));
         [bestScore, best] = max(scores);
-        best = best-1;
-        if best ==1
-            numberName = 'odd';
-        else
-            numberName = 'even';
-        end
         number = num2str(ii);
         figure(ii); clf; imagesc(temp_image); axis image; colormap gray; drawnow;
         title(sprintf('the number is %s, score is %.1f%%',net.meta.classes.name{best+1}-1,bestScore*100))
@@ -138,15 +136,6 @@ for ii=1:endingLabelValue
         temp_var_im = 'temp_image';
         images{ii} = temp_image;
         
-        %Classify Result
-        scores = squeeze(gather(res(end).x));
-        [bestScore, best] = max(scores);
-        best = best-1;
-        if best ==1
-            numberName = 'odd';
-        else
-            numberName = 'even';
-        end
     end
 end
 
